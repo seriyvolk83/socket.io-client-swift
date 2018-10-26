@@ -111,6 +111,14 @@ extension String {
         
         return array
     }
+
+    func toArrayOfStringsOrDics() throws -> [Any] {
+        let string = self
+            .replacingOccurrences(of: "}]", with: "}", options: NSString.CompareOptions.literal, range: nil)
+            .replacingOccurrences(of: "\"message\",{", with: "\"message\":{", options: NSString.CompareOptions.literal, range: nil)
+        let jsonString = "{\(string)}"
+        return [try jsonString.toNSDictionary() as Any]
+    }
     
     func toNSDictionary() throws -> NSDictionary {
         guard let binData = data(using: .utf8, allowLossyConversion: false) else { return [:] }

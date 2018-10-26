@@ -127,7 +127,11 @@ extension SocketParsable where Self: SocketIOClientSpec {
         do {
             return .right(try data.toArray())
         } catch {
-            return .left("Error parsing data for packet")
+            do {
+                return .right(try data.toArrayOfStringsOrDics())
+            } catch {
+                return .left("Error parsing data for packet")
+            }
         }
     }
     
